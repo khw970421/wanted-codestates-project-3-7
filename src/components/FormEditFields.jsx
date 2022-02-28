@@ -1,28 +1,64 @@
 import React from 'react';
+import styled from 'styled-components';
+import { BsArrowDownUp } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
+
+
+const FormEditFieldsWrapper = styled.div`
+  display:flex;
+  align-items: center;
+  button {
+    border:0;
+    display: flex;
+    padding:7px;
+    cursor:pointer;
+    background-color:transparent;
+    align-items: center;
+    box-sizing: border-box;
+    &:first-child {
+      background-color:#fff;
+    }
+    &:last-child {
+      background-color:#FF3355;
+      color:white;
+      font-size:1rem;
+    }
+  }
+`
+
+const Select = styled.select`
+  font-size: 1rem;
+  font-weight: 800;
+`;
+const LabelInput = styled.input`
+  font-weight: 800;
+`;
+
+const Fieldset = styled.fieldset`
+  display:flex;
+  align-items: center;
+  background-color: #eee; 
+`
 
 const FormEditFields = () => {
   return (
-    <form>
-      <fieldset>
-        <select name="type">
-          <option value="텍스트">텍스트</option>
-          <option value="전화번호">전화번호</option>
-          <option value="주소">주소</option>
-          <option value="드롭다운">드롭다운</option>
-          <option value="첨부파일">첨부파일</option>
-          <option value="이용약관">이용약관</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <input type="text" />
-      </fieldset>
-      <fieldset>
+    <FormEditFieldsWrapper>
+      <Select name="type">
+        <option value="text">텍스트</option>
+        <option value="phone">전화번호</option>
+        <option value="address">주소</option>
+        <option value="select">드롭다운</option>
+        <option value="file">첨부파일</option>
+        <option value="agreement">이용약관</option>
+      </Select>
+      <LabelInput type="text" />
+      <Fieldset>
         <input type="checkbox" id="required" />
         <label htmlFor="required">필수</label>
-      </fieldset>
-      <button>드래그</button>
-      <button>삭제</button>
-    </form>
+      </Fieldset>
+      <button type="button" aria-label="드래그"><BsArrowDownUp /></button>
+      <button type="button" aria-label="삭제"><IoClose /></button>
+    </FormEditFieldsWrapper>
   );
 };
 

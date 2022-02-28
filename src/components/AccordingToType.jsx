@@ -1,13 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const AccordingToType = ({ type }) => {
+const AccordingToType = ({ type, tags, setTags }) => {
   const inputRef = useRef();
-  const [tags, setTags] = useState();
 
   // 태그 제거
-  const removeTag = num => {
+  const removeTag = (e, num) => {
     const item = tags.slice();
     item.splice(num, 1);
     setTags(item);
@@ -39,7 +38,7 @@ const AccordingToType = ({ type }) => {
             return (
               <TagBtn key={num}>
                 <span>{item}</span>
-                <button onClick={() => removeTag(num)} />
+                <button type="button" onClick={(e) => removeTag(e, num)} />
               </TagBtn>
             );
           })}
@@ -121,7 +120,7 @@ const Input = styled.input`
 
 AccordingToType.propTypes = {
   type: PropTypes.string.isRequired,
-  tags: PropTypes.any,
+  tags: PropTypes.array,
   setTags: PropTypes.func,
 };
 
