@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Main = props => {
+const Editor = props => {
   return (
     <div>
 
@@ -9,8 +9,8 @@ const Main = props => {
   );
 };
 
-Main.propTypes = {
+Editor.propTypes = {
 
 };
 
-export default Main;
+export default Editor;
