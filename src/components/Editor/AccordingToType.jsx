@@ -2,12 +2,12 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const AccordingToType = ({ type }) => {
+const AccordingToType = ({ index, fields, setFields, type }) => {
   const inputRef = useRef();
   const [tags, setTags] = useState([]);
 
   // 태그 제거
-  const removeTag = (e, num) => {
+  const removeTag = num => {
     const item = tags.slice();
     item.splice(num, 1);
     setTags(item);
@@ -21,17 +21,36 @@ const AccordingToType = ({ type }) => {
       setTags(item);
     }
   };
-
   const resetInput = e => {
     if (e.key === ',') {
       inputRef.current.value = '';
     }
+    setFields(
+      fields.map((list, i) => {
+        if (index === i) {
+          return { ...list, option: tags };
+        }
+        return list;
+      }),
+    );
+  };
+
+  // TextInput 설정
+  const handleChangeText = e => {
+    setFields(
+      fields.map((list, i) => {
+        if (index === i) {
+          return { ...list, placeholder: e.target.value };
+        }
+        return list;
+      }),
+    );
   };
 
   return (
     <>
       {type == 'text' || type == 'phone' ? (
-        <input type="text" />
+        <input type="text" onChange={handleChangeText} />
       ) : type === 'select' ? (
         <TagBox>
           {/* tags */}
@@ -120,7 +139,10 @@ const Input = styled.input`
 `;
 
 AccordingToType.propTypes = {
-  type: PropTypes.string.isRequired,
+  index: PropTypes.number,
+  fields: PropTypes.array,
+  setFields: PropTypes.func,
+  type: PropTypes.string,
 };
 
 export default AccordingToType;
