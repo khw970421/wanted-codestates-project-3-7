@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Submission = props => {
+const Submission = () => {
   return (
     <div>
 
