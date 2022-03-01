@@ -4,24 +4,42 @@ import FormEditFields from './FormEditFields';
 import PropTypes from 'prop-types';
 import Wysiwyg from './Wysiwyg';
 
-const Fields = ({ field, index, fields, setFields, formDrag }) => {
+const Fields = ({
+  field,
+  index,
+  fields,
+  setFields,
+  DragStart,
+  DragEnter,
+  DragOver,
+  DragEnd,
+}) => {
   return (
     <>
       <FormEditFields
         index={index}
         fields={fields}
         setFields={setFields}
-        type={field.type}
-        formDrag={formDrag}
+        field={field}
+        DragStart={DragStart}
+        DragEnter={DragEnter}
+        DragOver={DragOver}
+        DragEnd={DragEnd}
       />
+
       <AccordingToType
         field={field}
         index={index}
         fields={fields}
         setFields={setFields}
-        type={field.type}
       />
-      <Wysiwyg index={index} fields={fields} setFields={setFields} />
+
+      <Wysiwyg
+        index={index}
+        fields={fields}
+        setFields={setFields}
+        field={field}
+      />
     </>
   );
 };
@@ -31,7 +49,10 @@ Fields.propTypes = {
   index: PropTypes.number,
   fields: PropTypes.array,
   setFields: PropTypes.func,
-  formDrag: PropTypes.func,
+  DragStart: PropTypes.func,
+  DragEnter: PropTypes.func,
+  DragOver: PropTypes.func,
+  DragEnd: PropTypes.func,
 };
 
 export default Fields;
