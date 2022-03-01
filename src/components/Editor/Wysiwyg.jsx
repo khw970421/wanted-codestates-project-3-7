@@ -1,14 +1,16 @@
 import { Editor } from 'react-draft-wysiwyg';
 import styled from 'styled-components';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useState, useEffect } from 'react';
-import { EditorState } from 'draft-js';
+import PropTypes from 'prop-types';
+import React from 'react';
+// import { useState, useEffect } from 'react';
+// import { EditorState } from 'draft-js';
 
 const Wysiwyg = ({ width = 388, height = 30 }) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  useEffect(() => {
-    console.log(editorState);
-  }, [editorState]);
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // useEffect(() => {
+  //   console.log(editorState);
+  // }, [editorState]);
   const onEditorStateChange = () => {
     //Editor에 접근하는 경우 해당 querySelector를 이용해
     // <span data-offset-key="emi0t-0-0" style="font-weight: bold;"><span data-text="true">wefefe</span></span> 와 같은 css를 포함한 태그를 뽑아낸다.
@@ -25,11 +27,16 @@ const Wysiwyg = ({ width = 388, height = 30 }) => {
         toolbar={{
           inline: { inDropdown: false },
         }}
-        editorState={editorState}
+        // editorState={editorState}
         onEditorStateChange={onEditorStateChange}
       />
     </EditorContainer>
   );
+};
+
+Wysiwyg.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
 };
 
 const EditorContainer = styled.div`
