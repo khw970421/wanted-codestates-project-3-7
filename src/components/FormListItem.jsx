@@ -1,29 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
+import { deleteForm } from '../actions';
 import { useNavigate } from 'react-router-dom';
 import { HiOutlineDocumentText } from 'react-icons/hi';
+import { useDispatch } from 'react-redux';
 
-const formListItem = () => {
+const formListItem = ({ obj }) => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const deleteItem = () => {
-    console.log('폼 삭제');
+  const deleteItem = Id => {
+    // console.log('폼 삭제');
+    dispatch(deleteForm(Id));
   };
 
   return (
     <SurveyList>
       <TitleWrap>
         <HiOutlineDocumentText color="#fff" size="50"></HiOutlineDocumentText>
-        <SurveyTitle>제목입니다</SurveyTitle>
+        <SurveyTitle>{obj.title}</SurveyTitle>
       </TitleWrap>
       <BtnWrap>
         <SurveyBtn
           onClick={() => {
-            navigate('/forms/:id/submission');
+            navigate(`/forms/${obj.formId}/submission`);
           }}
         >
           제출목록
         </SurveyBtn>
-        <SurveyBtn onClick={deleteItem}>삭제</SurveyBtn>
+        <SurveyBtn
+          onClick={() => {
+            deleteItem(obj.formId);
+          }}
+        >
+          삭제
+        </SurveyBtn>
       </BtnWrap>
     </SurveyList>
   );

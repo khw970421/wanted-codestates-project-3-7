@@ -1,16 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const Form = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div></div>;
 };
 
-Form.propTypes = {
+// Form.propTypes = {
 
-};
+// };
 
 export default Form;
