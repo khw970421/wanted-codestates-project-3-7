@@ -6,7 +6,7 @@ import React from 'react';
 // import { useState, useEffect } from 'react';
 // import { EditorState } from 'draft-js';
 
-const Wysiwyg = ({ width = 388, height = 30 }) => {
+const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
   // const [editorState, setEditorState] = useState(EditorState.createEmpty());
   // useEffect(() => {
   //   console.log(editorState);
@@ -16,7 +16,34 @@ const Wysiwyg = ({ width = 388, height = 30 }) => {
     // <span data-offset-key="emi0t-0-0" style="font-weight: bold;"><span data-text="true">wefefe</span></span> 와 같은 css를 포함한 태그를 뽑아낸다.
 
     console.log(
-      document.querySelector('.public-DraftStyleDefault-block').innerHTML,
+      document.querySelectorAll('.public-DraftStyleDefault-block')[index]
+        .innerHTML,
+    );
+
+    setFields(
+      fields.map((list, i) => {
+        if (list.type === 'agreement') {
+          //이용약관일 경우
+          if (index === i) {
+            return {
+              ...list,
+              contents: document.querySelectorAll(
+                '.public-DraftStyleDefault-block',
+              )[index].innerHTML,
+            };
+          }
+        } else {
+          if (index === i) {
+            return {
+              ...list,
+              description: document.querySelectorAll(
+                '.public-DraftStyleDefault-block',
+              )[index].innerHTML,
+            };
+          }
+        }
+        return list;
+      }),
     );
   };
   return (
@@ -37,6 +64,9 @@ const Wysiwyg = ({ width = 388, height = 30 }) => {
 Wysiwyg.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
+  index: PropTypes.number,
+  fields: PropTypes.array,
+  setFields: PropTypes.func,
 };
 
 const EditorContainer = styled.div`
@@ -65,7 +95,7 @@ const EditorContainer = styled.div`
     display: none;
   }
   .rdw-fontfamily-wrapper {
-    diaply: none;
+    display: none;
   }
   .rdw-list-wrapper {
     display: none;
