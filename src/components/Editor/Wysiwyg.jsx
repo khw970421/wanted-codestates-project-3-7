@@ -43,7 +43,6 @@ const EditorContainer = styled.div`
   .wrapper-class {
     width: ${props => props.width}px;
     height: ${props => props.height}px;
-    margin: 0 auto;
     margin-bottom: 4rem;
   }
   .rdw-inline-wrapper :nth-child(5) {

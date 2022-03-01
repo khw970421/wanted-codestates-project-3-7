@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Fields from '../components/Editor/Fields';
-import Wysiwyg from '../components/Editor/Wysiwyg';
 const basic = {
   id: '',
   type: 'text',
@@ -49,7 +48,6 @@ const Editor = () => {
         추가
       </button>
       <div>{JSON.stringify(fields)}</div>
-      <Wysiwyg />
     </Form>
   );
 };
