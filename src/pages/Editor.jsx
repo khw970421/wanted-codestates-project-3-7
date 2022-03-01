@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import Fields from '../components/Editor/Fields';
+
 const basic = {
   id: '',
   type: 'text',
@@ -11,43 +12,58 @@ const basic = {
 };
 
 const Editor = () => {
-  const [fields, setFields] = useState([
-    {
-      id: '',
-      type: 'text',
-      required: false,
-      label: '',
-      placeholder: '',
-      description: '',
-    },
-  ]);
+  const [fields, setFields] = useState([basic]);
+  const [isDrag, setIsDrag] = useState(false);
+  const dragItemIndex = useRef(null);
+  const dragOverItemIndex = useRef(null);
 
   // field 추가
   const addField = () => {
-    let copy = fields.map(item => item);
-    copy.push(basic);
+    const copy = [...fields, { ...basic }];
     setFields(copy);
   };
 
+  const DragStart = (_, idx) => {
+    dragItemIndex.current = idx;
+    setIsDrag(true);
+  };
 
-  const formDrag = (e) => {
-    if (!e.target.matches('.drag-button')) return;
-    console.log(e.target);
-    // console.log(e.dataTransfer.setData("text", e.target.id));
-  }
+  const DragEnter = (_, idx) => {
+    const copyFields = [...fields];
+    const item = copyFields[dragItemIndex.current];
+    dragOverItemIndex.current = idx;
+
+    copyFields.splice(dragItemIndex.current, 1);
+    copyFields.splice(dragOverItemIndex.current, 0, item);
+    dragItemIndex.current = dragOverItemIndex.current;
+    dragOverItemIndex.current = null;
+
+    setFields(copyFields);
+  };
+
+  const DragOver = e => {
+    e.preventDefault();
+  };
+
+  const DragEnd = () => {
+    setIsDrag(false);
+  };
 
   return (
     <Form>
       <ul>
         {fields.map((field, index) => {
           return (
-            <li key={index} draggable>
+            <li className={`field${index}`} key={index} draggable={isDrag}>
               <Fields
                 field={field}
-                index={index}
                 fields={fields}
+                index={index}
                 setFields={setFields}
-                formDrag={formDrag}
+                DragStart={DragStart}
+                DragEnter={DragEnter}
+                DragOver={DragOver}
+                DragEnd={DragEnd}
               />
             </li>
           );
