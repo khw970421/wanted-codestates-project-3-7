@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiChevronDown, BiCheck } from 'react-icons/bi';
@@ -13,67 +13,107 @@ const Form = () => {
     isModalShown: state.modal.isModalShown,
   }));
   const [inputValues, setInputValues] = useState({
-    name: '',
-    phone: '',
+    name: null,
+    phoneNumber: '',
     fullAddress: '',
-    input_0: '',
-    input_1: '',
-    agreement: true,
+    input1: ['small', 'medium', 'large'],
+    input2: '',
+    agreement: false,
   });
-  const [isChecked, setIsChecked] = useState(false);
   const [isAllItemFilled, setIsAllItemFilled] = useState(false);
-  const { name, phone, fullAddress, input_0, input_1, agreement } = inputValues;
-  const [address, setAddress] = useState(''); // 주소
-  const [addressDetail, SetAddressDetail] = useState('');
-  const [isOpenPost, setIsOpenPost] = useState(false);
+  const [isOptionHasList, setIsOptionHasList] = useState(false);
+  const { name, phoneNumber, fullAddress, input1, input2, agreement } =
+    inputValues;
 
-  const onChangeInputName = (e) => {
-    setInputValues({
-      ...inputValues,
-      name: e.target.value,
-    });
-  };
+  const [ selected, setSelected ] = useState(null);
 
   const onChangeInputValues = (e) => {
     const { value, name } = e.target;
-    setInputValues({
-      ...inputValues,
-      [name]: value,
-    });
-  };
-
-  const onChangePost = () => {
-    setIsOpenPost(!!isOpenPost);
+    console.log(e.target);
+    if (name === 'name') {
+      setInputValues({
+        ...inputValues,
+        [name]: value,
+      });
+    }
+    if (name === 'phoneNumber') {
+      const regex = /^[0-9\b -]{0,13}$/;
+      if (regex.test(e.target.value)) {
+        setInputValues({
+          ...inputValues,
+          [name]: value,
+        });
+      }
+    }
   };
 
   const onClickOpenModal = () => {
     dispatch(openModal());
   };
 
-  const onClickCloseModal = () => {
-    dispatch(closeModal());
-  };
-
   const setAddressKakakoApi = (data) => {
     setInputValues({
       ...inputValues,
       fullAddress: data,
-    })
+    });
     dispatch(closeModal());
+  };
+
+  const isUserAgreement = () => {
+    setInputValues({
+      ...inputValues,
+      agreement: !agreement,
+    });
+  };
+
+  const isOptionCanView = () => {
+    setIsOptionHasList(!isOptionHasList);
+  };
+
+  const selectClickItemHandler = (item) => {
+    setSelected(item);
+    setIsOptionHasList(!isOptionHasList);
   }
-  console.log(inputValues);
+
+  useEffect(() => {
+    if (phoneNumber.length === 10) {
+      setInputValues({
+        ...inputValues,
+        phoneNumber: phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+      });
+    }
+    if (phoneNumber.length === 13) {
+      setInputValues({
+        ...inputValues,
+        phoneNumber: phoneNumber
+          .replace(/-/g, '')
+          .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
+      });
+    }
+  }, [phoneNumber]);
 
   return (
     <Container>
       <Wrapper>
         <h2>이름</h2>
         <br />
-        <InputField />
+        <InputField
+          type="text"
+          name="name"
+          placeholder="주민등록상이름"
+          value={name}
+          onChange={onChangeInputValues}
+        />
       </Wrapper>
       <Wrapper>
         <h2>휴대폰번호</h2>
         <br />
-        <InputField />
+        <InputField
+          type="text"
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={onChangeInputValues}
+        />
       </Wrapper>
       <Wrapper>
         <h2>배송지</h2>
@@ -87,8 +127,24 @@ const Form = () => {
         <h2>옵션1</h2>
         <br />
         <OptionWrapper>
-          <BiChevronDown />
+          <div>{selected}</div>
+          <BiChevronDown onClick={() => isOptionCanView()} />
         </OptionWrapper>
+        {isOptionHasList === true ? (
+          <ul>
+            {input1?.map((item, index) => {
+              return (
+                <OptionData
+                  item={item}
+                  key={index}
+                  onClick={() => selectClickItemHandler(input1[index])}
+                >
+                  {item}
+                </OptionData>
+              );
+            })}
+          </ul>
+        ) : null}
       </Wrapper>
       <Wrapper>
         <h2>첨부파일(선택)</h2>
@@ -117,8 +173,8 @@ const Form = () => {
         <Label>
           <LabelContentsWrapper>
             <CheckBoxWrapper>
-              <Checkbox type="checkbox" />
-              {isChecked === false ? (
+              <Checkbox type="checkbox" onClick={() => isUserAgreement()} />
+              {agreement === false ? (
                 <Unchecked />
               ) : (
                 <CheckedIconWrapper>
@@ -164,7 +220,7 @@ const Wrapper = styled.div`
 
 const OptionWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 1rem;
   width: 100%;
@@ -258,6 +314,8 @@ const LabelContentsWrapper = styled.div`
 `;
 
 const CheckBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
   position: relative;
   width: 32px;
   height: 32px;
@@ -278,8 +336,8 @@ const Checkbox = styled.input`
 `;
 
 const Unchecked = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 9999px;
   padding: 0.25em;
   border: 1px solid rgba(214, 217, 220);
@@ -289,10 +347,12 @@ const CheckedIconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  color: rgb(255, 51, 85);
-  fill: rgb(255, 51, 85);
+  width: 1rem;
+  height: 1rem;
+  padding: 0.25em;
+  border-radius: 9999px;
+  color: #ff3355;
+  fill: #ff3355;
 `;
 
 const SummitButtonContainer = styled.div`
@@ -318,20 +378,33 @@ const SummitButton = styled.div`
     props.isAllFilled &&
     css`
        {
-        background-color: rgb(255, 51, 85);
-        color: rgb(255, 255, 255);
+        background-color: #ff3355;
+        color: #ffffff;
       }
     `}
   background-color: rgba(255, 51, 85, 0.2);
   border-radius: 8px;
-  border: 1px solid rgb(241, 243, 245);
-  color: rgb(255, 255, 255);
+  border: 1px solid #f1f3f5;
+  color: #ffffff;
   cursor: not-allowed;
   font-size: 1rem;
   font-weight: 700;
   padding: 16px 16px;
   text-align: center;
   height: 42px;
+`;
+
+const OptionData = styled.li`
+  width: 100%;
+  padding: 5px 0px 5px 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #efefef;
+  list-style: none;
+  &:hover {
+    background: #ff3355;
+    color: #ffffff;
+  }
+  cursor: pointer;
 `;
 
 export default Form;
