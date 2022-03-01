@@ -2,6 +2,7 @@ import React from 'react';
 import AccordingToType from './AccordingToType';
 import FormEditFields from './FormEditFields';
 import PropTypes from 'prop-types';
+import Wysiwyg from './Wysiwyg';
 
 const Fields = ({ field, index, fields, setFields }) => {
   return (
@@ -19,6 +20,7 @@ const Fields = ({ field, index, fields, setFields }) => {
         setFields={setFields}
         type={field.type}
       />
+      <Wysiwyg />
     </div>
   );
 };
