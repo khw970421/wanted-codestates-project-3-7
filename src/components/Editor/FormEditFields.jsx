@@ -4,12 +4,28 @@ import { BsArrowDownUp } from 'react-icons/bs';
 import { IoClose } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 
-const FormEditFields = ({ index, fields, setFields, type, formDrag }) => {
+const FormEditFields = ({
+  index,
+  fields,
+  setFields,
+  field,
+  DragStart,
+  DragEnter,
+  DragOver,
+  DragEnd,
+}) => {
   const labelInput = useRef();
   const checkbox = useRef();
 
   // type 설정
   const handleChangeSelect = e => {
+    const reset = field => {
+      delete field.description;
+      delete field.contents; // 이용약관
+      delete field.option; // select
+      delete field.placeholder;
+    };
+
     setFields(
       fields.map((field, i) => {
         if (index === i) {
@@ -37,14 +53,6 @@ const FormEditFields = ({ index, fields, setFields, type, formDrag }) => {
         return field;
       }),
     );
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const reset = field => {
-    delete field.description;
-    delete field.contents; // 이용약관
-    delete field.option; // select
-    delete field.placeholder;
   };
 
   // label 설정
@@ -85,7 +93,7 @@ const FormEditFields = ({ index, fields, setFields, type, formDrag }) => {
 
   return (
     <FormEditFieldsWrapper>
-      <Select name="type" onChange={handleChangeSelect} value={type}>
+      <Select name="type" onChange={handleChangeSelect} value={field.type}>
         <option value="text">텍스트</option>
         <option value="phone">전화번호</option>
         <option value="address">주소</option>
@@ -93,18 +101,32 @@ const FormEditFields = ({ index, fields, setFields, type, formDrag }) => {
         <option value="file">첨부파일</option>
         <option value="agreement">이용약관</option>
       </Select>
-      <LabelInput ref={labelInput} onChange={handleChangeInput} type="text" />
+      <LabelInput
+        ref={labelInput}
+        onChange={handleChangeInput}
+        type="text"
+        value={field.label}
+      />
       <Fieldset>
         <input
           ref={checkbox}
           onChange={handleChangeCheckbox}
           type="checkbox"
           id={'required_' + index}
+          checked={field.required}
         />
         <label htmlFor={'required_' + index}>필수</label>
       </Fieldset>
-      <button type="button" aria-label="드래그" className='drag-button' onMouseDown={formDrag}>
-        <BsArrowDownUp className='drag-button' />
+      <button
+        type="button"
+        aria-label="드래그"
+        className="drag-button"
+        onMouseDown={e => DragStart(e, index)}
+        onDragEnter={e => DragEnter(e, index)}
+        onDragOver={DragOver}
+        onDragLeave={e => DragEnd(e, index)}
+      >
+        <BsArrowDownUp className="drag-button" />
       </button>
       <button onClick={deleteList} type="button" aria-label="삭제">
         <IoClose />
@@ -147,12 +169,16 @@ const Fieldset = styled.fieldset`
   align-items: center;
   background-color: #eee;
 `;
+
 FormEditFields.propTypes = {
   index: PropTypes.number,
   fields: PropTypes.array,
   setFields: PropTypes.func,
-  type: PropTypes.string,
-  formDrag: PropTypes.func,
+  field: PropTypes.object,
+  DragStart: PropTypes.func,
+  DragEnter: PropTypes.func,
+  DragOver: PropTypes.func,
+  DragEnd: PropTypes.func,
 };
 
 export default FormEditFields;
