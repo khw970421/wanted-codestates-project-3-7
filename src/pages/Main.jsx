@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import FormListItem from '../components/FormListItem';
 
-const Main = props => {
+const Main = () => {
   const navigate = useNavigate();
 
   return (
@@ -55,7 +54,5 @@ const PlusBtn = styled.div`
     background-color: #fa778d;
   }
 `;
-
-Main.propTypes = {};
 
 export default Main;

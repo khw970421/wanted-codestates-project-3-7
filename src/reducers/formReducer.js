@@ -1,7 +1,7 @@
 import { CREATE_FORM, SUBMIT_FORM } from '../actions';
 import { initialState } from './initialState';
 
-const formReducer = (state = initialState, action) => {
+export const formReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_FORM: {
       return {
@@ -29,5 +29,3 @@ const formReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default formReducer;

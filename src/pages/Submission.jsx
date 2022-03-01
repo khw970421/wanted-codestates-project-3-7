@@ -1,16 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const Submission = () => {
-  return (
-    <div>
-
-    </div>
-  );
-};
-
-Submission.propTypes = {
-
+  return <div></div>;
 };
 
 export default Submission;

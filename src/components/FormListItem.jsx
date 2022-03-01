@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 
 const formListItem = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const deleteItem = () => {
     console.log('폼 삭제');
   };
@@ -18,7 +18,7 @@ const formListItem = () => {
       <BtnWrap>
         <SurveyBtn
           onClick={() => {
-            navigate('/forms/:id/submission');
+            // navigate('/forms/:id/submission');
           }}
         >
           제출목록
