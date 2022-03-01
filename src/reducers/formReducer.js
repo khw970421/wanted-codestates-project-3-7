@@ -1,7 +1,7 @@
-import { CREATE_FORM, SUBMIT_FORM } from '../actions';
+import { CREATE_FORM, SUBMIT_FORM, DELETE_FORM } from '../actions';
 import { initialState } from './initialState';
 
-const formReducer = (state = initialState, action) => {
+export const formReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_FORM: {
       return {
@@ -24,6 +24,13 @@ const formReducer = (state = initialState, action) => {
         ...state,
         forms,
       };
+    }
+    case DELETE_FORM: {
+      return Object.assign({}, state, {
+        forms: [
+          ...state.forms.filter(el => el.formId !== action.payload.formId),
+        ],
+      });
     }
     default:
       return state;

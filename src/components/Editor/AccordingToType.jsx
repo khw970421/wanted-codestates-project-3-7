@@ -1,12 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const AccordingToType = ({ type, tags, setTags }) => {
+const AccordingToType = ({ index, fields, setFields, field }) => {
   const inputRef = useRef();
+  const [tags, setTags] = useState([]);
+
+  // type이 select가아닐때
+  // tags 초기화
+  useEffect(() => {
+    if (field.type !== 'select') {
+      setTags([]);
+    } else {
+      setTags(field.option);
+    }
+  }, [fields]);
 
   // 태그 제거
-  const removeTag = (e, num) => {
+  const removeTag = num => {
     const item = tags.slice();
     item.splice(num, 1);
     setTags(item);
@@ -21,24 +32,49 @@ const AccordingToType = ({ type, tags, setTags }) => {
     }
   };
 
+  //input 비워주기
   const resetInput = e => {
     if (e.key === ',') {
       inputRef.current.value = '';
     }
+    setFields(
+      fields.map((list, i) => {
+        if (index === i) {
+          return { ...list, option: tags };
+        }
+        return list;
+      }),
+    );
+  };
+
+  // TextInput 설정
+  const handleChangeText = e => {
+    setFields(
+      fields.map((list, i) => {
+        if (index === i) {
+          return { ...list, placeholder: e.target.value };
+        }
+        return list;
+      }),
+    );
   };
 
   return (
     <>
-      {type == 'text' || type == 'phone' ? (
-        <input type="text" />
-      ) : (
+      {field.type == 'text' || field.type == 'phone' ? (
+        <input
+          type="text"
+          onChange={handleChangeText}
+          value={field.placeholder}
+        />
+      ) : field.type === 'select' ? (
         <TagBox>
           {/* tags */}
           {tags?.map((item, num) => {
             return (
               <TagBtn key={num}>
                 <span>{item}</span>
-                <button type="button" onClick={(e) => removeTag(e, num)} />
+                <button type="button" onClick={() => removeTag(num)} />
               </TagBtn>
             );
           })}
@@ -51,7 +87,7 @@ const AccordingToType = ({ type, tags, setTags }) => {
             type="text"
           />
         </TagBox>
-      )}
+      ) : null}
     </>
   );
 };
@@ -119,9 +155,10 @@ const Input = styled.input`
 `;
 
 AccordingToType.propTypes = {
-  type: PropTypes.string.isRequired,
-  tags: PropTypes.array,
-  setTags: PropTypes.func,
+  index: PropTypes.number,
+  fields: PropTypes.array,
+  setFields: PropTypes.func,
+  field: PropTypes.object,
 };
 
 export default AccordingToType;
