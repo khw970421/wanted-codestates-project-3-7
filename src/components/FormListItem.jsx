@@ -16,7 +16,7 @@ const formListItem = ({ obj }) => {
 
   return (
     <SurveyList>
-      <TitleWrap>
+      <TitleWrap onClick={() => navigate(`/forms/${obj.formId}`)}>
         <HiOutlineDocumentText color="#fff" size="50"></HiOutlineDocumentText>
         <SurveyTitle>{obj.title}</SurveyTitle>
       </TitleWrap>
@@ -59,6 +59,7 @@ const TitleWrap = styled.div`
   align-items: center;
   padding: 10px;
   border-radius: 6px;
+  cursor: pointer;
 `;
 
 const SurveyTitle = styled.div`
