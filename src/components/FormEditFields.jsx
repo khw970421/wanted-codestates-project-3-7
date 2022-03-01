@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import { BsArrowDownUp } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 
-
 const FormEditFieldsWrapper = styled.div`
   display:flex;
-  align-items: center;
   button {
     border:0;
     display: flex;
@@ -41,6 +39,11 @@ const Fieldset = styled.fieldset`
 `
 
 const FormEditFields = () => {
+
+  const dragForm = (e) => {
+    console.log(e.dataTransfer.setData('text', e.target.id));
+  }
+
   return (
     <FormEditFieldsWrapper>
       <Select name="type">
@@ -56,7 +59,7 @@ const FormEditFields = () => {
         <input type="checkbox" id="required" />
         <label htmlFor="required">필수</label>
       </Fieldset>
-      <button type="button" aria-label="드래그"><BsArrowDownUp /></button>
+      <button type="button" id="drag" aria-label="드래그" draggable onDragStart={dragForm}><BsArrowDownUp /></button>
       <button type="button" aria-label="삭제"><IoClose /></button>
     </FormEditFieldsWrapper>
   );
