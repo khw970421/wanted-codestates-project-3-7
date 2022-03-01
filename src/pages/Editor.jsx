@@ -28,17 +28,26 @@ const Editor = () => {
     copy.push(basic);
     setFields(copy);
   };
+
+
+  const formDrag = (e) => {
+    if (!e.target.matches('.drag-button')) return;
+    console.log(e.target);
+    // console.log(e.dataTransfer.setData("text", e.target.id));
+  }
+
   return (
     <Form>
       <ul>
         {fields.map((field, index) => {
           return (
-            <li key={index}>
+            <li key={index} draggable>
               <Fields
                 field={field}
                 index={index}
                 fields={fields}
                 setFields={setFields}
+                formDrag={formDrag}
               />
             </li>
           );

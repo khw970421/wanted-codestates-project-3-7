@@ -4,7 +4,7 @@ import { BsArrowDownUp } from 'react-icons/bs';
 import { IoClose } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 
-const FormEditFields = ({ index, fields, setFields, type }) => {
+const FormEditFields = ({ index, fields, setFields, type, formDrag }) => {
   const labelInput = useRef();
   const checkbox = useRef();
 
@@ -103,8 +103,8 @@ const FormEditFields = ({ index, fields, setFields, type }) => {
         />
         <label htmlFor={'required_' + index}>필수</label>
       </Fieldset>
-      <button type="button" aria-label="드래그">
-        <BsArrowDownUp />
+      <button type="button" aria-label="드래그" className='drag-button' onMouseDown={formDrag}>
+        <BsArrowDownUp className='drag-button' />
       </button>
       <button onClick={deleteList} type="button" aria-label="삭제">
         <IoClose />
@@ -115,7 +115,7 @@ const FormEditFields = ({ index, fields, setFields, type }) => {
 
 const FormEditFieldsWrapper = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   button {
     border: 0;
     display: flex;
@@ -124,8 +124,7 @@ const FormEditFieldsWrapper = styled.div`
     background-color: transparent;
     align-items: center;
     box-sizing: border-box;
-    &:first-child {
-      background-color: #fff;
+    &:nth-of-type(1) {
     }
     &:last-child {
       background-color: #ff3355;
@@ -153,6 +152,7 @@ FormEditFields.propTypes = {
   fields: PropTypes.array,
   setFields: PropTypes.func,
   type: PropTypes.string,
+  formDrag: PropTypes.func,
 };
 
 export default FormEditFields;
