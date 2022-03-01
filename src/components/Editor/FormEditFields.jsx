@@ -12,8 +12,8 @@ const FormEditFields = ({ index, fields, setFields, type }) => {
   const handleChangeSelect = e => {
     setFields(
       fields.map((field, i) => {
-        reset(field);
         if (index === i) {
+          reset(field);
           if (e.target.value === 'text' || e.target.value === 'phone') {
             return {
               ...field,
@@ -42,8 +42,8 @@ const FormEditFields = ({ index, fields, setFields, type }) => {
   // eslint-disable-next-line no-unused-vars
   const reset = field => {
     delete field.description;
-    delete field.contents;
-    delete field.option;
+    delete field.contents; // 이용약관
+    delete field.option; // select
     delete field.placeholder;
   };
 

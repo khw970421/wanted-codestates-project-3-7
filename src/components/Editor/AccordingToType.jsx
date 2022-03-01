@@ -1,10 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const AccordingToType = ({ index, fields, setFields, type }) => {
   const inputRef = useRef();
   const [tags, setTags] = useState([]);
+
+  // type이 select가아닐때
+  // tags 초기화
+  useEffect(() => {
+    if (type !== 'select') {
+      setTags([]);
+    }
+  }, [fields]);
 
   // 태그 제거
   const removeTag = num => {
@@ -21,6 +29,7 @@ const AccordingToType = ({ index, fields, setFields, type }) => {
       setTags(item);
     }
   };
+  //input 비워주기
   const resetInput = e => {
     if (e.key === ',') {
       inputRef.current.value = '';

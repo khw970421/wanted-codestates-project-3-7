@@ -20,7 +20,7 @@ const Fields = ({ field, index, fields, setFields }) => {
         setFields={setFields}
         type={field.type}
       />
-      <Wysiwyg />
+      <Wysiwyg index={index} fields={fields} setFields={setFields} />
     </div>
   );
 };
