@@ -1,16 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const Submission = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div></div>;
 };
 
-Submission.propTypes = {
+// Submission.propTypes = {
 
-};
+// };
 
 export default Submission;

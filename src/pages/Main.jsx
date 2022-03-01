@@ -1,13 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import FormListItem from '../components/FormListItem';
+import { useSelector } from 'react-redux';
 
-const Main = props => {
+const Main = () => {
   const navigate = useNavigate();
-
+  const state = useSelector(state => state.formReducer.forms);
+  console.log(state);
   return (
     <Container>
       <Title>최근 설문지</Title>
@@ -20,7 +22,9 @@ const Main = props => {
       </PlusBtn>
 
       {/* map으로 list 가져오기 */}
-      <FormListItem></FormListItem>
+      {state.map((obj, index) => {
+        return <FormListItem obj={obj} key={index}></FormListItem>;
+      })}
     </Container>
   );
 };
@@ -56,6 +60,6 @@ const PlusBtn = styled.div`
   }
 `;
 
-Main.propTypes = {};
+// Main.propTypes = {};
 
 export default Main;
