@@ -4,14 +4,15 @@ import FormEditFields from './FormEditFields';
 import PropTypes from 'prop-types';
 import Wysiwyg from './Wysiwyg';
 
-const Fields = ({ field, index, fields, setFields }) => {
+const Fields = ({ field, index, fields, setFields, formDrag }) => {
   return (
-    <div>
+    <>
       <FormEditFields
         index={index}
         fields={fields}
         setFields={setFields}
         type={field.type}
+        formDrag={formDrag}
       />
       <AccordingToType
         field={field}
@@ -21,7 +22,7 @@ const Fields = ({ field, index, fields, setFields }) => {
         type={field.type}
       />
       <Wysiwyg index={index} fields={fields} setFields={setFields} />
-    </div>
+    </>
   );
 };
 
@@ -30,6 +31,7 @@ Fields.propTypes = {
   index: PropTypes.number,
   fields: PropTypes.array,
   setFields: PropTypes.func,
+  formDrag: PropTypes.func,
 };
 
 export default Fields;
