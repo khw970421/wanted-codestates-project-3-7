@@ -21,7 +21,7 @@ const Fields = ({ field, index, fields, setFields, formDrag }) => {
         setFields={setFields}
         type={field.type}
       />
-      <Wysiwyg />
+      <Wysiwyg index={index} fields={fields} setFields={setFields} />
     </>
   );
 };
