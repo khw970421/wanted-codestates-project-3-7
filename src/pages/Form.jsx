@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiChevronDown, BiCheck } from 'react-icons/bi';
 import { BsFillFileArrowDownFill } from 'react-icons/bs';
+import { AiTwotoneCamera } from 'react-icons/ai';
 import Modal from '../components/modal/Modal';
 import DaumPost from '../components/DaumPost';
+import ProgressBar from '../components/progressBar/progressBar';
 import { openModal, closeModal } from '../actions';
 
 const Form = () => {
@@ -25,7 +27,44 @@ const Form = () => {
   const { name, phoneNumber, fullAddress, input1, input2, agreement } =
     inputValues;
 
-  const [ selected, setSelected ] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [image, setImage] = useState({
+    preview: '',
+    raw: '',
+  });
+  const [isPreviewSeeing, setIsPreviewSeeing] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const hiddenFileInput = useRef(null);
+
+  const handleClick = (e) => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleImageAddress = (e) => {
+    if (e.target.files.length) {
+      setImage({
+        ...image,
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0],
+      });
+      setIsPreviewSeeing(!isPreviewSeeing);
+    }
+  };
+  // 서버를 활용할건지에 대한  논의가 필요
+
+  const handleUpload = async (e) => {
+    e.preventDefalt();
+    const formData = new FormData();
+    formData.append('image', image.raw);
+    await fetch('YOUR_URL', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+  };
 
   const onChangeInputValues = (e) => {
     const { value, name } = e.target;
@@ -73,7 +112,7 @@ const Form = () => {
   const selectClickItemHandler = (item) => {
     setSelected(item);
     setIsOptionHasList(!isOptionHasList);
-  }
+  };
 
   useEffect(() => {
     if (phoneNumber.length === 10) {
@@ -91,6 +130,10 @@ const Form = () => {
       });
     }
   }, [phoneNumber]);
+
+  useEffect(() => {
+    // setInterval(() => setProgress(Math.floor(Math.random() * 100) + 1), 3000);
+  }, []);
 
   return (
     <Container>
@@ -118,10 +161,7 @@ const Form = () => {
       <Wrapper>
         <h2>배송지</h2>
         <br />
-        <InputField
-          onClick={() => onClickOpenModal()}
-          value={inputValues.fullAddress}
-        />
+        <InputField onClick={() => onClickOpenModal()} value={fullAddress} />
       </Wrapper>
       <Wrapper>
         <h2>옵션1</h2>
@@ -147,22 +187,44 @@ const Form = () => {
         ) : null}
       </Wrapper>
       <Wrapper>
+        <ProgressBar progress={'100'} setProgress={setProgress}/>
+      </Wrapper>
+      <Wrapper>
         <h2>첨부파일(선택)</h2>
         <br />
         <SectionWrapper>
           <AttachSection>
             <InnerSection>
-              <ButtonContainer>
-                <ButtonWrapper>
+              <ImageWrapper>
+                <PreviewImage
+                  // src={image.preview}
+                  alt="preview_image" />
+                <Translucent isPreviewSeeing={isPreviewSeeing}>
                   <AttachButton>
                     <ButtonContentesWrapper>
-                      <BsFillFileArrowDownFill />
-                      <br />
-                      <p>눌러서 파일등록</p>
+                      {isPreviewSeeing === true ? (
+                        <>
+                          <BsFillFileArrowDownFill onClick={handleClick} />
+                          <br />
+                          <p>눌러서 파일 변경</p>
+                        </>
+                      ) : (
+                        <>
+                          <AiTwotoneCamera onClick={handleClick} />
+                          <br />
+                          <p>눌러서 파일 변경</p>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        ref={hiddenFileInput}
+                        style={{ display: 'none' }}
+                        onChange={handleImageAddress}
+                      />
                     </ButtonContentesWrapper>
                   </AttachButton>
-                </ButtonWrapper>
-              </ButtonContainer>
+                </Translucent>
+              </ImageWrapper>
             </InnerSection>
           </AttachSection>
         </SectionWrapper>
@@ -248,7 +310,6 @@ const AttachSection = styled.div`
   width: 260px:
   height 216px;
   padding-bottom: 60%;
-  border: 1px solid tomato;
 `;
 
 const InnerSection = styled.div`
@@ -258,28 +319,51 @@ const InnerSection = styled.div`
   right: 0px;
   bottom: 0px;
 `;
-const ButtonContainer = styled.div`
+
+const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid blue;
+  border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 0.375rem;
   cursor: pointer;
   overflow-x: hidden;
   overflow-y: hidden;
 `;
 
-const ButtonWrapper = styled.div`
+const PreviewImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-size: cover;
+  background: no-repeat center;
+  background-image: url(${(props) => props.src});
+  user-seletor: none;
+`;
+
+const Translucent = styled.div`
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
-  border: 1px solid green;
-  cursor: poiter;
-  user-seletor: none;
+  ${(props) =>
+    props.isPreviewSeeing &&
+    css`
+       {
+        background-color: rgba(0, 0, 0, 0.58);
+        opacity: 0.5;
+      }
+    `}
+  cursor: pointer;
 `;
 
 const AttachButton = styled.button`
