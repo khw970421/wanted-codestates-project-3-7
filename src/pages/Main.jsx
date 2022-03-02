@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 
 const Main = () => {
   const navigate = useNavigate();
+
   const { forms } = useSelector(state => ({
-    forms: state.form.forms
+    forms: state.form.forms,
   }));
   console.log(forms);
+
   return (
     <Container>
       <Title>최근 설문지</Title>
@@ -30,7 +32,7 @@ const Main = () => {
   );
 };
 
-const Container = styled.div`
+export const Container = styled.div`
   margin: 0 auto;
   width: 428px;
   padding: 20px;

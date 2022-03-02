@@ -7,10 +7,9 @@ import { useDispatch } from 'react-redux';
 
 const formListItem = ({ obj }) => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
   const deleteItem = Id => {
-    // console.log('폼 삭제');
     dispatch(deleteForm(Id));
   };
 
