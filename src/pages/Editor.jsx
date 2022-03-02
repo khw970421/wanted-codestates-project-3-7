@@ -23,12 +23,12 @@ const Editor = () => {
     setFields(copy);
   };
 
-  const DragStart = (_, idx) => {
+  const dragStart = (_, idx) => {
     dragItemIndex.current = idx;
     setIsDrag(true);
   };
 
-  const DragEnter = (_, idx) => {
+  const dragEnter = (_, idx) => {
     const copyFields = [...fields];
     const item = copyFields[dragItemIndex.current];
     dragOverItemIndex.current = idx;
@@ -41,11 +41,11 @@ const Editor = () => {
     setFields(copyFields);
   };
 
-  const DragOver = e => {
+  const dragOver = e => {
     e.preventDefault();
   };
 
-  const DragEnd = () => {
+  const dragEnd = () => {
     setIsDrag(false);
   };
 
@@ -60,10 +60,10 @@ const Editor = () => {
                 fields={fields}
                 index={index}
                 setFields={setFields}
-                DragStart={DragStart}
-                DragEnter={DragEnter}
-                DragOver={DragOver}
-                DragEnd={DragEnd}
+                dragStart={dragStart}
+                dragEnter={dragEnter}
+                dragOver={dragOver}
+                dragEnd={dragEnd}
               />
             </li>
           );
