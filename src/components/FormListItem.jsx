@@ -10,7 +10,6 @@ const formListItem = ({ obj }) => {
   const navigate = useNavigate();
 
   const deleteItem = Id => {
-    // console.log('폼 삭제');
     dispatch(deleteForm(Id));
   };
 

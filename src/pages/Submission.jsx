@@ -2,7 +2,6 @@ import React from 'react';
 import { Container } from './Main';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
 
 const Submission = () => {
   const navigate = useNavigate();
