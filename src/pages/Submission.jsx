@@ -35,7 +35,7 @@ const Submission = () => {
       {modal ? <Modal /> : null}
       <SummitButton
         onClick={() => {
-          navigate('/forms');
+          navigate('/');
         }}
       >
         확인
