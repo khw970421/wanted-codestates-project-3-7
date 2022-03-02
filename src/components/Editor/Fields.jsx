@@ -9,10 +9,10 @@ const Fields = ({
   index,
   fields,
   setFields,
-  DragStart,
-  DragEnter,
-  DragOver,
-  DragEnd,
+  dragStart,
+  dragEnter,
+  dragOver,
+  dragEnd,
 }) => {
   return (
     <>
@@ -21,10 +21,10 @@ const Fields = ({
         fields={fields}
         setFields={setFields}
         field={field}
-        DragStart={DragStart}
-        DragEnter={DragEnter}
-        DragOver={DragOver}
-        DragEnd={DragEnd}
+        dragStart={dragStart}
+        dragEnter={dragEnter}
+        dragOver={dragOver}
+        dragEnd={dragEnd}
       />
 
       <AccordingToType
@@ -49,10 +49,10 @@ Fields.propTypes = {
   index: PropTypes.number,
   fields: PropTypes.array,
   setFields: PropTypes.func,
-  DragStart: PropTypes.func,
-  DragEnter: PropTypes.func,
-  DragOver: PropTypes.func,
-  DragEnd: PropTypes.func,
+  dragStart: PropTypes.func,
+  dragEnter: PropTypes.func,
+  dragOver: PropTypes.func,
+  dragEnd: PropTypes.func,
 };
 
 export default Fields;
