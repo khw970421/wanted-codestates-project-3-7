@@ -22,7 +22,7 @@ const Form = () => {
     input2: '',
     agreement: false,
   });
-  const [isAllItemFilled, setIsAllItemFilled] = useState(false);
+  // const [isAllItemFilled, setIsAllItemFilled] = useState(false);
   const [isOptionHasList, setIsOptionHasList] = useState(false);
   const { name, phoneNumber, fullAddress, input1, input2, agreement } =
     inputValues;
@@ -35,9 +35,13 @@ const Form = () => {
   const [isPreviewSeeing, setIsPreviewSeeing] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  console.log(progress);
+  console.log(input2);
+
   const hiddenFileInput = useRef(null);
 
   const handleClick = (e) => {
+    console.log(e);
     hiddenFileInput.current.click();
   };
 
@@ -53,18 +57,18 @@ const Form = () => {
   };
   // 서버를 활용할건지에 대한  논의가 필요
 
-  const handleUpload = async (e) => {
-    e.preventDefalt();
-    const formData = new FormData();
-    formData.append('image', image.raw);
-    await fetch('YOUR_URL', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      body: formData,
-    });
-  };
+  // const handleUpload = async (e) => {
+  //   e.preventDefalt();
+  //   const formData = new FormData();
+  //   formData.append('image', image.raw);
+  //   await fetch('YOUR_URL', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //     body: formData,
+  //   });
+  // };
 
   const onChangeInputValues = (e) => {
     const { value, name } = e.target;
@@ -257,8 +261,6 @@ const Form = () => {
       {isModalShown ? (
         <Modal>
           <DaumPost
-            inputValues={inputValues}
-            setInputValues={setInputValues}
             setAddressKakakoApi={setAddressKakakoApi}
           />
         </Modal>

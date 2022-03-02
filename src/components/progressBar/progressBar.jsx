@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProgressBar = ({ progress, setProgress }) => {
-
+const ProgressBar = progress => {
   return (
     <ProgressBarContainer>
       <Filler progress={progress}>
@@ -22,7 +21,7 @@ const ProgressBarContainer = styled.div`
 
 const Filler = styled.div`
   height: 100%;
-  width: ${(props) => props.progress}%;
+  width: ${props => props.progress}%;
   background-color: #6a1b9a;
   transition: 5s;
   border-radius: inherit;

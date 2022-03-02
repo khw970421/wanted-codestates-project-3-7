@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
 
-const FormListItem = ({ obj }) => {
+const formListItem = ({ obj }) => {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const deleteItem = Id => {
     // console.log('폼 삭제');
     dispatch(deleteForm(Id));
-  }
+  };
 
   return (
     <SurveyList>
@@ -81,4 +82,4 @@ const SurveyBtn = styled.button`
   color: #666;
 `;
 
-export default FormListItem;
+export default formListItem;

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { closeModal } from '../../actions/index';
 import { AiOutlineClose } from 'react-icons/ai';
 
-const Modal = ({ children }) => {
-  const PreventModalOff = (e) => {
+const Modal = children => {
+  const PreventModalOff = e => {
     e.stopPropagation();
   };
   const dispatch = useDispatch();
