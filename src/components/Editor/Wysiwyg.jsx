@@ -6,7 +6,7 @@ import React from 'react';
 // import { useState, useEffect } from 'react';
 // import { EditorState } from 'draft-js';
 
-const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
+const Wysiwyg = ({ index, fields, setFields, height = 100 }) => {
   // const [editorState, setEditorState] = useState(EditorState.createEmpty());
   // useEffect(() => {
   //   console.log(editorState);
@@ -47,7 +47,7 @@ const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
     );
   };
   return (
-    <EditorContainer width={width} height={height}>
+    <EditorContainer height={height}>
       <Editor
         wrapperClassName="wrapper-class"
         editorClassName="editor-class"
@@ -71,7 +71,7 @@ Wysiwyg.propTypes = {
 
 const EditorContainer = styled.div`
   .wrapper-class {
-    width: ${props => props.width}px;
+    width: 100%;
     height: ${props => props.height}px;
     margin-bottom: 4rem;
   }
