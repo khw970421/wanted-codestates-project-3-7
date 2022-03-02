@@ -59,7 +59,6 @@ const Form = () => {
   };
 
 
-  console.log(image.preview);
   // 서버를 활용할건지에 대한  논의가 필요
 
   // const handleUpload = async (e) => {
@@ -77,7 +76,6 @@ const Form = () => {
 
   const onChangeInputValues = e => {
     const { value, name } = e.target;
-    console.log(e.target);
     if (name === 'name') {
       setInputValues({
         ...inputValues,
@@ -142,7 +140,6 @@ const Form = () => {
 
   useInterval(
     () => {
-      console.log(progress);
       if (progress < 100) {
         setProgress(progress + 1);
       }
@@ -225,14 +222,14 @@ const Form = () => {
                           <br />
                           <p>눌러서 파일 등록 </p>
                         </>
-                      ): null
-                      //   (
-                      //   <>
-                      //     <BsFillFileArrowDownFill onClick={handleClick} />
-                      //     <br />
-                      //     <p>눌러서 파일 변경</p>
-                      //   </>
-                      // )
+                      ) : null
+                        //   (
+                        //   <>
+                        //     <BsFillFileArrowDownFill onClick={handleClick} />
+                        //     <br />
+                        //     <p>눌러서 파일 변경</p>
+                        //   </>
+                        // )
                       }
                       <input
                         type="file"
@@ -272,7 +269,7 @@ const Form = () => {
         <SummitButtonWrapper>
           <SummitButton
             onClick={() => {
-              navigate('/forms');
+              navigate('/');
             }}
           >
             제출하기
@@ -341,7 +338,7 @@ const InnerSection = styled.div`
 
 const ImageWrapper = styled.div`
   display: flex;
-  jusify-content: center;
+  justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;

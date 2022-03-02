@@ -7,7 +7,6 @@ const Submission = () => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  console.log(id);
 
   return (
     <Container>
@@ -22,7 +21,7 @@ const Submission = () => {
       <SurveyItem>1. 설문 답변</SurveyItem>
       <SummitButton
         onClick={() => {
-          navigate('/forms');
+          navigate('/');
         }}
       >
         확인
