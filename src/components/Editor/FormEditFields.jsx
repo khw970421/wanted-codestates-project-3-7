@@ -159,15 +159,31 @@ const FormEditFieldsWrapper = styled.div`
 const Select = styled.select`
   font-size: 1rem;
   font-weight: 800;
+  border: none;
+  padding-left: 10px;
+  border-top-left-radius: 10px;
+  :focus {
+    outline: none;
+  }
 `;
 const LabelInput = styled.input`
   font-weight: 800;
+  border: none;
+  width: 100%;
+  border-left: 1px solid #f1f1f1;
+  padding: 0 10px;
+  :focus {
+    outline: none;
+  }
 `;
 
 const Fieldset = styled.fieldset`
   display: flex;
   align-items: center;
   background-color: #eee;
+  width: 110px;
+  font-size: 14px;
+  font-weight: bold;
 `;
 
 FormEditFields.propTypes = {

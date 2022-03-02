@@ -4,7 +4,8 @@ export const initialState = {
       formId: 1,
       title: '기본 설문지',
       fields: [],
-      sumbitData: [],
+      submitData: [],
     },
   ],
+  isModalShown: false,
 };
