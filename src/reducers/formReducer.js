@@ -14,7 +14,11 @@ export const formReducer = (state = initialState, action) => {
         if (item.formId === action.payload.formId) {
           return {
             ...item,
+<<<<<<< HEAD
             submitData: [...item.submitData, action.payload.response],
+=======
+            sumbitData: [...item.summitData, action.payload.response],
+>>>>>>> feat-formPage-v2
           };
         }
         return item;
