@@ -7,16 +7,19 @@ import { useDispatch } from 'react-redux';
 
 const formListItem = ({ obj }) => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
   const deleteItem = Id => {
-    // console.log('폼 삭제');
     dispatch(deleteForm(Id));
   };
 
   return (
     <SurveyList>
-      <TitleWrap>
+      <TitleWrap
+        onClick={() => {
+          navigate(`/forms/${obj.formId}`);
+        }}
+      >
         <HiOutlineDocumentText color="#fff" size="50"></HiOutlineDocumentText>
         <SurveyTitle>{obj.title}</SurveyTitle>
       </TitleWrap>

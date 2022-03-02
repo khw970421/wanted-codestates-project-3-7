@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiChevronDown, BiCheck } from 'react-icons/bi';
@@ -8,10 +8,14 @@ import Modal from '../components/modal/Modal';
 import DaumPost from '../components/DaumPost';
 import ProgressBar from '../components/progressBar/progressBar';
 import { openModal, closeModal } from '../actions';
+import { useNavigate } from 'react-router-dom';
+import { useInterval } from '../util';
 
 const Form = () => {
   const dispatch = useDispatch();
-  const { isModalShown } = useSelector((state) => ({
+  const navigate = useNavigate();
+
+  const { isModalShown } = useSelector(state => ({
     isModalShown: state.modal.isModalShown,
   }));
   const [inputValues, setInputValues] = useState({
@@ -33,19 +37,17 @@ const Form = () => {
     raw: '',
   });
   const [isPreviewSeeing, setIsPreviewSeeing] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  console.log(progress);
-  console.log(input2);
+  const [progress, setProgress] = useState(1);
+  const [isProgress, setIsProgress] = useState(false);
 
   const hiddenFileInput = useRef(null);
 
-  const handleClick = (e) => {
-    console.log(e);
+  const handleClick = e => {
     hiddenFileInput.current.click();
   };
 
-  const handleImageAddress = (e) => {
+  const handleImageAddress = e => {
+    setIsProgress(true);
     if (e.target.files.length) {
       setImage({
         ...image,
@@ -55,6 +57,9 @@ const Form = () => {
       setIsPreviewSeeing(!isPreviewSeeing);
     }
   };
+
+
+  console.log(image.preview);
   // 서버를 활용할건지에 대한  논의가 필요
 
   // const handleUpload = async (e) => {
@@ -70,7 +75,7 @@ const Form = () => {
   //   });
   // };
 
-  const onChangeInputValues = (e) => {
+  const onChangeInputValues = e => {
     const { value, name } = e.target;
     console.log(e.target);
     if (name === 'name') {
@@ -94,7 +99,7 @@ const Form = () => {
     dispatch(openModal());
   };
 
-  const setAddressKakakoApi = (data) => {
+  const setAddressKakakoApi = data => {
     setInputValues({
       ...inputValues,
       fullAddress: data,
@@ -113,7 +118,7 @@ const Form = () => {
     setIsOptionHasList(!isOptionHasList);
   };
 
-  const selectClickItemHandler = (item) => {
+  const selectClickItemHandler = item => {
     setSelected(item);
     setIsOptionHasList(!isOptionHasList);
   };
@@ -135,9 +140,18 @@ const Form = () => {
     }
   }, [phoneNumber]);
 
-  useEffect(() => {
-    // setInterval(() => setProgress(Math.floor(Math.random() * 100) + 1), 3000);
-  }, []);
+  useInterval(
+    () => {
+      console.log(progress);
+      if (progress < 100) {
+        setProgress(progress + 1);
+      }
+      if (progress === 99) {
+        setIsProgress(!isProgress);
+      }
+    },
+    isProgress && progress < 100 ? 100 : null,
+  );
 
   return (
     <Container>
@@ -191,34 +205,35 @@ const Form = () => {
         ) : null}
       </Wrapper>
       <Wrapper>
-        <ProgressBar progress={'100'} setProgress={setProgress}/>
-      </Wrapper>
-      <Wrapper>
         <h2>첨부파일(선택)</h2>
         <br />
         <SectionWrapper>
           <AttachSection>
             <InnerSection>
               <ImageWrapper>
-                <PreviewImage
-                  // src={image.preview}
-                  alt="preview_image" />
-                <Translucent isPreviewSeeing={isPreviewSeeing}>
+                {isProgress === false ? (
+                  <PreviewImage src={image.preview} alt="preview_image" />
+                ) : (
+                  <ProgressBar progress={progress} />
+                )}
+                <Translucent isPreviewSeeing={isPreviewSeeing} isProgress={isProgress}>
                   <AttachButton>
                     <ButtonContentesWrapper>
-                      {isPreviewSeeing === true ? (
-                        <>
-                          <BsFillFileArrowDownFill onClick={handleClick} />
-                          <br />
-                          <p>눌러서 파일 변경</p>
-                        </>
-                      ) : (
+                      {isPreviewSeeing === false ? (
                         <>
                           <AiTwotoneCamera onClick={handleClick} />
                           <br />
-                          <p>눌러서 파일 변경</p>
+                          <p>눌러서 파일 등록 </p>
                         </>
-                      )}
+                      ): null
+                      //   (
+                      //   <>
+                      //     <BsFillFileArrowDownFill onClick={handleClick} />
+                      //     <br />
+                      //     <p>눌러서 파일 변경</p>
+                      //   </>
+                      // )
+                      }
                       <input
                         type="file"
                         ref={hiddenFileInput}
@@ -255,14 +270,18 @@ const Form = () => {
       <br />
       <SummitButtonContainer>
         <SummitButtonWrapper>
-          <SummitButton>제출하기</SummitButton>
+          <SummitButton
+            onClick={() => {
+              navigate('/forms');
+            }}
+          >
+            제출하기
+          </SummitButton>
         </SummitButtonWrapper>
       </SummitButtonContainer>
       {isModalShown ? (
         <Modal>
-          <DaumPost
-            setAddressKakakoApi={setAddressKakakoApi}
-          />
+          <DaumPost setAddressKakakoApi={setAddressKakakoApi} />
         </Modal>
       ) : null}
     </Container>
@@ -309,8 +328,6 @@ const SectionWrapper = styled.div`
 
 const AttachSection = styled.div`
   position: relative;
-  width: 260px:
-  height 216px;
   padding-bottom: 60%;
 `;
 
@@ -323,6 +340,9 @@ const InnerSection = styled.div`
 `;
 
 const ImageWrapper = styled.div`
+  display: flex;
+  jusify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
   height: 100%;
@@ -342,8 +362,8 @@ const PreviewImage = styled.div`
   object-fit: contain;
   background-size: cover;
   background: no-repeat center;
-  background-image: url(${(props) => props.src});
-  user-seletor: none;
+  background-image: url(${props => props.src});
+  user-select: none;
 `;
 
 const Translucent = styled.div`
@@ -357,7 +377,7 @@ const Translucent = styled.div`
   left: 0px;
   width: 100%;
   height: 100%;
-  ${(props) =>
+  ${props =>
     props.isPreviewSeeing &&
     css`
        {
@@ -366,6 +386,7 @@ const Translucent = styled.div`
       }
     `}
   cursor: pointer;
+  z-index: 10;
 `;
 
 const AttachButton = styled.button`
@@ -460,7 +481,7 @@ const SummitButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${(props) =>
+  ${props =>
     props.isAllFilled &&
     css`
        {
@@ -475,9 +496,9 @@ const SummitButton = styled.div`
   cursor: not-allowed;
   font-size: 1rem;
   font-weight: 700;
-  padding: 16px 16px;
+  padding: 4px 16px;
   text-align: center;
-  height: 42px;
+  height: 40px;
 `;
 
 const OptionData = styled.li`

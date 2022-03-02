@@ -7,7 +7,8 @@ import { useState, useEffect, useRef } from 'react';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
-const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
+
+const Wysiwyg = ({ index, fields, setFields, height = 100 }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [editorToHtml, setEditorToHTML] = useState(
     draftToHtml(convertToRaw(editorState.getCurrentContent())),
@@ -105,7 +106,7 @@ Wysiwyg.propTypes = {
 
 const EditorContainer = styled.div`
   .wrapper-class {
-    width: ${props => props.width}px;
+    width: 100%;
     height: ${props => props.height}px;
     margin-bottom: 4rem;
   }
