@@ -80,8 +80,12 @@ const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
   }, [editorToHtml]);
 
   useEffect(() => {
-    console.log('filedsChange', fields);
-    const blocksFromHtml = htmlToDraft(fields[index].description);
+    let blocksFromHtml;
+    if (Object.keys(fields[index]).includes('contents')) {
+      blocksFromHtml = htmlToDraft(fields[index].contents);
+    } else {
+      blocksFromHtml = htmlToDraft(fields[index].description);
+    }
     if (blocksFromHtml) {
       const { contentBlocks, entityMap } = blocksFromHtml;
       // https://draftjs.org/docs/api-reference-content-state/#createfromblockarray
@@ -102,7 +106,7 @@ const Wysiwyg = ({ index, fields, setFields, width = 388, height = 100 }) => {
   };
 
   useEffect(() => {
-    console.log(editorState);
+    // console.log(editorState);
   }, [editorState]);
 
   return (
