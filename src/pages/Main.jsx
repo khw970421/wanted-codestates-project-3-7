@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +7,10 @@ import { useSelector } from 'react-redux';
 
 const Main = () => {
   const navigate = useNavigate();
-  const state = useSelector(state => state.formReducer.forms);
-  console.log(state);
+  const { forms } = useSelector(state => ({
+    forms: state.form.forms
+  }));
+  console.log(forms);
   return (
     <Container>
       <Title>최근 설문지</Title>
@@ -22,7 +23,7 @@ const Main = () => {
       </PlusBtn>
 
       {/* map으로 list 가져오기 */}
-      {state.map((obj, index) => {
+      {forms.map((obj, index) => {
         return <FormListItem obj={obj} key={index}></FormListItem>;
       })}
     </Container>
@@ -59,7 +60,5 @@ const PlusBtn = styled.div`
     background-color: #fa778d;
   }
 `;
-
-// Main.propTypes = {};
 
 export default Main;

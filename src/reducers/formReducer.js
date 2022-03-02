@@ -14,7 +14,7 @@ export const formReducer = (state = initialState, action) => {
         if (item.formId === action.payload.formId) {
           return {
             ...item,
-            sumbitData: [...item.sumbitData, action.payload.response],
+            submitData: [...item.submitData, action.payload.response],
           };
         }
         return item;
@@ -26,15 +26,14 @@ export const formReducer = (state = initialState, action) => {
       };
     }
     case DELETE_FORM: {
-      return Object.assign({}, state, {
+      return {
+        ...state,
         forms: [
           ...state.forms.filter(el => el.formId !== action.payload.formId),
         ],
-      });
+      };
     }
     default:
       return state;
   }
 };
-
-export default formReducer;
