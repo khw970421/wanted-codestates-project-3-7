@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { formReducer } from './formReducer';
+import { handleModalReducer } from './modalReducer';
 
 const rootReducer = combineReducers({
-  formReducer,
+  form: formReducer,
+  modal: handleModalReducer,
 });
 
 export default rootReducer;
