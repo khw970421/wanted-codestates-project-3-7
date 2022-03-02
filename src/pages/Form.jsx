@@ -328,11 +328,6 @@ const SectionWrapper = styled.div`
 
 const AttachSection = styled.div`
   position: relative;
-<<<<<<< HEAD
-  width: 260px;
-  height: 216px;
-=======
->>>>>>> feat-formPage-v2
   padding-bottom: 60%;
 `;
 
@@ -368,11 +363,7 @@ const PreviewImage = styled.div`
   background-size: cover;
   background: no-repeat center;
   background-image: url(${props => props.src});
-<<<<<<< HEAD
-  user-selector: none;
-=======
   user-select: none;
->>>>>>> feat-formPage-v2
 `;
 
 const Translucent = styled.div`
